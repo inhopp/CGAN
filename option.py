@@ -7,7 +7,8 @@ def parse_args():
     parser.add_argument("--device", type=str, default="0")
 
     # models
-    parser.add_argument("--input_size", type=int, default=32) 
+    parser.add_argument("--input_size", type=int, default=32)
+    parser.add_argument("--n_classes", type=int, default=10)
 
     # training setting
     parser.add_argument("--lr", type=float, default=0.0002)
