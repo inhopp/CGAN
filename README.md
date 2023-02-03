@@ -2,9 +2,11 @@
 
 Conditional generative adversarial networks
 
+> 어째 0이 조금 이상하다..
+
 | Epoch 0 | Epoch 50 | Epoch 100 | Epoch 150 | Epoch 200 |
 |:-:|:-:|:-:|:-:|:-:|
-| ![data0](https://user-images.githubusercontent.com/96368476/215316520-03512d96-1d3b-4eae-b16a-30c7e042c5fc.png) | ![data49](https://user-images.githubusercontent.com/96368476/215316070-7c6587ba-85fb-40ee-8c26-f777ce02f87e.png) | ![data99](https://user-images.githubusercontent.com/96368476/215316071-b530d879-19bb-4fe0-bc9d-e963eb57bc96.png) | ![data149](https://user-images.githubusercontent.com/96368476/215316072-6c7be07b-9c12-4541-8bf2-a1ff6011ba18.png) | ![data199](https://user-images.githubusercontent.com/96368476/215316073-37175110-0f99-4793-a49e-23422cad5a86.png) |
+| ![data0](https://user-images.githubusercontent.com/96368476/215316520-03512d96-1d3b-4eae-b16a-30c7e042c5fc.png) | ![data49](https://user-images.githubusercontent.com/96368476/216553710-0e8a780c-90b8-4186-bd5a-484578408505.png) | ![data99](https://user-images.githubusercontent.com/96368476/216553706-a268af94-9024-4384-b681-7983432341cf.png) | ![data149](https://user-images.githubusercontent.com/96368476/216553703-4cb7b39b-6b76-4471-9f09-59ebe5da6c09.png) | ![data199](https://user-images.githubusercontent.com/96368476/216553699-c5c7d3e9-8cc2-405c-86cc-a98495c8b7b9.png) |
 
 
 ## Repository Directory 
