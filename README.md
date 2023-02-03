@@ -1,8 +1,6 @@
-# GAN
+# CGAN
 
-Generative adversarial networks
-
-> [Paper Review](https://inhopp.github.io/paper/Paper14/)
+Conditional generative adversarial networks
 
 | Epoch 0 | Epoch 50 | Epoch 100 | Epoch 150 | Epoch 200 |
 |:-:|:-:|:-:|:-:|:-:|
@@ -12,7 +10,7 @@ Generative adversarial networks
 ## Repository Directory 
 
 ``` python 
-├── GAN
+├── CGAN
      ├── datasets
      │     └── mnist
      ├── data.py
@@ -36,7 +34,7 @@ Generative adversarial networks
 
 ``` python
 # Clone this repo and install dependency
-git clone https://github.com/inhopp/GAN.git
+git clone https://github.com/inhopp/CGAN.git
 ```
 
 <br>
@@ -46,7 +44,8 @@ git clone https://github.com/inhopp/GAN.git
 ``` python
 python3 train.py
     --device {}(default: cpu) \
-    --input_size{}(default: 28) \
+    --input_size{}(default: 32) \
+    --n_classes{}(default: 10) \
     --lr {}(default: 0.0002) \
     --n_epoch {}(default: 200) \
     --num_workers {}(default: 4) \
@@ -58,4 +57,4 @@ python3 train.py
 
 
 #### Main Reference
-https://github.com/happy-jihye/Awesome-GAN-Papers/blob/main/gan/gan.ipynb
+https://github.com/eriklindernoren/PyTorch-GAN
