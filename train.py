@@ -49,12 +49,13 @@ class Solver():
                 fake = Variable(torch.zeros(imgs.size(0), 1)).to(self.dev)
 
                 real_imgs = Variable(imgs).to(self.dev)
-                labels = Variable(labels)
+                labels = Variable(labels).to(self.dev)
 
                 # train Generator
                 self.optimizer_G.zero_grad()
                 z = Variable(torch.randn((imgs.size(0), 100))).to(self.dev)
-                gen_labels = Variable(np.random.randint(0, self.n_classes, imgs.size(0)))
+                gen_labels = torch.tensor(np.random.randint(0, self.n_classes, imgs.size(0)))
+                gen_labels = Variable(gen_labels).to(self.dev)
                 generated_imgs = self.generator(z, gen_labels)
                 g_loss = self.loss_fn(self.discriminator(generated_imgs, gen_labels), real)
                 g_loss.backward()
