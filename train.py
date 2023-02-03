@@ -2,6 +2,7 @@ from tqdm import tqdm
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import numpy as np
 from data import generate_loader
 from option import get_option
 from model import Generator
@@ -13,11 +14,12 @@ class Solver():
     def __init__(self, opt):
         self.opt = opt
         self.img_size = opt.input_size
+        self.n_classes = opt.n_classes
         self.dev = torch.device("cuda:{}".format(opt.gpu) if torch.cuda.is_available() else "cpu")
         print("device: ", self.dev)
 
-        self.generator = Generator(channels=1, img_size=self.img_size).to(self.dev)
-        self.discriminator = Discriminator(channels=1, img_size=self.img_size).to(self.dev)
+        self.generator = Generator(channels=1, img_size=self.img_size, n_classes=self.n_classes).to(self.dev)
+        self.discriminator = Discriminator(channels=1, img_size=self.img_size, n_classes=self.n_classes).to(self.dev)
 
         if opt.multigpu:
             self.generator = nn.DataParallel(self.generator, device_ids=self.opt.device_ids).to(self.dev)
@@ -26,7 +28,7 @@ class Solver():
         print("# Generator params:", sum(map(lambda x: x.numel(), self.generator.parameters())))
         print("# Discriminator params:", sum(map(lambda x: x.numel(), self.discriminator.parameters())))
 
-        self.loss_fn = nn.BCELoss()
+        self.loss_fn = nn.MSELoss()
 
         self.optimizer_G = optim.Adam(self.generator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
         self.optimizer_D = optim.Adam(self.discriminator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
@@ -41,25 +43,27 @@ class Solver():
         for epoch in range(opt.n_epoch):
             loop = tqdm(self.train_loader)
 
-            for i , (imgs, _) in enumerate(loop):
+            for i , (imgs, labels) in enumerate(loop):
                 # Adversarial ground truths (real=1, fake=0)
                 real = Variable(torch.ones(imgs.size(0), 1)).to(self.dev)
                 fake = Variable(torch.zeros(imgs.size(0), 1)).to(self.dev)
 
                 real_imgs = Variable(imgs).to(self.dev)
+                labels = Variable(labels)
 
                 # train Generator
                 self.optimizer_G.zero_grad()
                 z = Variable(torch.randn((imgs.size(0), 100))).to(self.dev)
-                generated_imgs = self.generator(z)
-                g_loss = self.loss_fn(self.discriminator(generated_imgs), real)
+                gen_labels = Variable(np.random.randint(0, self.n_classes, imgs.size(0)))
+                generated_imgs = self.generator(z, gen_labels)
+                g_loss = self.loss_fn(self.discriminator(generated_imgs, gen_labels), real)
                 g_loss.backward()
                 self.optimizer_G.step()
 
                 # train Discriminator
                 self.optimizer_D.zero_grad()
-                real_loss = self.loss_fn(self.discriminator(real_imgs), real)
-                fake_loss = self.loss_fn(self.discriminator(generated_imgs.detach()), fake)
+                real_loss = self.loss_fn(self.discriminator(real_imgs, labels), real)
+                fake_loss = self.loss_fn(self.discriminator(generated_imgs.detach(), gen_labels), fake)
                 d_loss = (real_loss + fake_loss) / 2
                 d_loss.backward()
                 self.optimizer_D.step()
